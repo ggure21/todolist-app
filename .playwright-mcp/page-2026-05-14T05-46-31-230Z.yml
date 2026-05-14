@@ -1,0 +1,18 @@
+- generic [ref=e4]:
+  - heading "TodoListApp" [level=1] [ref=e5]
+  - form "로그인 폼" [ref=e7]:
+    - heading "로그인" [level=1] [ref=e8]
+    - generic [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e11]: 이메일
+        - textbox "이메일" [ref=e12]:
+          - /placeholder: 이메일을 입력하세요
+      - generic [ref=e13]:
+        - generic [ref=e14]: 비밀번호
+        - textbox "비밀번호" [ref=e15]:
+          - /placeholder: 비밀번호를 입력하세요
+      - button "로그인" [ref=e16] [cursor=pointer]
+    - paragraph [ref=e17]:
+      - text: 계정이 없으신가요?
+      - link "회원가입" [ref=e18] [cursor=pointer]:
+        - /url: /register

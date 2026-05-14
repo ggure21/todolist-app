@@ -1,6 +1,6 @@
 # TodoListApp PRD (Product Requirements Document)
 
-- 버전: 1.3.0
+- 버전: 1.4.0
 - 작성일: 2026-05-13
 - 참조 문서: [도메인 정의서 v1.0.0](./1-domain-definition.md)
 
@@ -14,6 +14,7 @@
 | 1.1.0 | 2026-05-13 | Business Analyst | 검토 반영: BR-T-01/02/04/05/06 명시, UC-03/05/07/08/09 상세 섹션 추가, 로그인 BR 참조 오류 수정, 회원 탈퇴 정책 2차 이관으로 일관화 |
 | 1.2.0 | 2026-05-13 | Business Analyst | 기술 스택 일관성 검토 반영: 4.1 표에 jsonwebtoken, bcrypt 추가 |
 | 1.3.0 | 2026-05-13 | Business Analyst | 인증 토큰 저장 방식 변경: localStorage → Zustand authStore 메모리 저장. 4.3 인증 전략 업데이트 |
+| 1.4.0 | 2026-05-13 | Business Analyst | 백엔드 언어 변경: TypeScript → JavaScript (CommonJS). 4.1 기술 스택 표 업데이트 |
 
 ---
 
@@ -107,7 +108,7 @@
 | 프론트엔드 | React + TypeScript | React 19 |
 | 상태 관리 | Zustand | 최신 안정 버전 |
 | 서버 상태 / API 통신 | TanStack Query | 최신 안정 버전 |
-| 백엔드 | Node.js + Express | LTS |
+| 백엔드 | Node.js + Express (JavaScript, CommonJS) | LTS |
 | 데이터베이스 | PostgreSQL | 17 |
 | DB 클라이언트 | pg (node-postgres) | - |
 | 인증 | JWT (JSON Web Token) | - |

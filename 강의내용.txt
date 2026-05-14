@@ -1,0 +1,25 @@
+https://stepanowon.slack.com/
+
+claude code : 아침 8시에 hello
+gemini : 교육장와서 hello
+opencode 는 안해도됨
+
+claude --dangerously-skip-permissions -r
+
+와이어프레임 만들때 ASCII 로 작성할 것 (토큰조금씀)
+-> 이후 만들어진 ASCII 를 다음과 같이 명령어 날림 (WF-01 화면을 SVG로 작성해 (이미지로만들어줌))
+-> 캡쳐한 이미지로 아래와 같이 캡쳐한 이미지로 스타일을 만들 수 있음
+"[Image #1] 스크린 캡쳐한 이미지를 참조하여 프론트엔드 앱의 스타일 가이드를 작성해줘. docs/10-style-guide.md 로 저장해줘."
+윈도우캡쳐 (윈도우키+shift+s), claude에 붙여넣기 alt + v
+
+const express = require("express");
+const { createMockMiddleware } = require("openapi-mock-express-middleware");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDoc = require("../swagger/swagger.json"); // 또는 .yaml 파싱
+const app = express();
+app.use("/api", createMockMiddleware({ spec: "../swagger/swagger.json" })); // 목 서버
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc)); // Swagger UI
+app.listen(3000);
+
+http://localhost:3000/docs/
+

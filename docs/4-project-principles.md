@@ -1,6 +1,6 @@
 # TodoListApp 프로젝트 구조 설계 원칙
 
-- 버전: 1.0.0
+- 버전: 1.1.0
 - 작성일: 2026-05-13
 - 참조 문서:
   - [도메인 정의서 v1.0.0](./1-domain-definition.md)
@@ -13,6 +13,7 @@
 
 | 버전 | 날짜 | 작성자 | 변경 내용 |
 |------|------|--------|-----------|
+| 1.1.0 | 2026-05-13 | Architect | 백엔드 언어 변경: TypeScript → JavaScript (CommonJS). 백엔드 파일 컨벤션, 코드 예시, 디렉토리 구조 업데이트 |
 | 1.0.0 | 2026-05-13 | Architect | 최초 작성 |
 
 ---
@@ -170,17 +171,16 @@ API Client (fetch/axios)       Repositories (DB 접근)
 | 상수 | camelCase + `.constants.ts` | `queryKeys.constants.ts` |
 | 페이지 컴포넌트 | PascalCase + `Page.tsx` | `TodoListPage.tsx`, `LoginPage.tsx` |
 
-#### 백엔드 (Node.js + Express + TypeScript)
+#### 백엔드 (Node.js + Express + JavaScript)
 
 | 파일 유형 | 컨벤션 | 예시 |
 |-----------|--------|------|
-| 라우터 | camelCase + `.routes.ts` | `todo.routes.ts`, `auth.routes.ts` |
-| 컨트롤러 | camelCase + `.controller.ts` | `todo.controller.ts` |
-| 서비스 | camelCase + `.service.ts` | `todo.service.ts` |
-| 레포지토리 | camelCase + `.repository.ts` | `todo.repository.ts` |
-| 미들웨어 | camelCase + `.middleware.ts` | `auth.middleware.ts`, `error.middleware.ts` |
-| 타입/DTO | camelCase + `.types.ts` | `todo.types.ts` |
-| 유틸리티 | camelCase + `.utils.ts` | `jwt.utils.ts`, `password.utils.ts` |
+| 라우터 | camelCase + `.js` | `todo.routes.js`, `auth.routes.js` |
+| 컨트롤러 | camelCase + `.js` | `todo.controller.js` |
+| 서비스 | camelCase + `.js` | `todo.service.js` |
+| 레포지토리 | camelCase + `.js` | `todo.repository.js` |
+| 미들웨어 | camelCase + `.js` | `auth.middleware.js`, `error.middleware.js` |
+| 유틸리티 | camelCase + `.js` | `jwt.utils.js`, `password.utils.js` |
 
 ### 3.2 변수명 / 함수명 컨벤션
 
@@ -275,18 +275,11 @@ API Client (fetch/axios)       Repositories (DB 접근)
 |------|------|-----------|
 | ESLint | 코드 린팅, 잠재적 버그 탐지 | `.eslintrc.cjs` |
 | Prettier | 코드 포맷 자동화 | `.prettierrc` |
-| TypeScript (strict mode) | 타입 안전성 강화 | `tsconfig.json` |
 | Husky + lint-staged | 커밋 전 자동 린팅/포맷 적용 | `.husky/pre-commit` |
 
 **ESLint 필수 규칙**:
 - `no-console`: `console.log` 직접 사용 금지 (로거 유틸리티 사용)
 - `no-unused-vars`: 사용하지 않는 변수 금지
-- `@typescript-eslint/no-explicit-any`: `any` 타입 사용 금지
-
-**TypeScript 설정**:
-- `"strict": true` 활성화
-- `"noImplicitAny": true`
-- `"strictNullChecks": true`
 
 ---
 
@@ -322,7 +315,7 @@ CLIENT_ORIGIN=http://localhost:5173
 
 - `.env` 파일은 반드시 `.gitignore`에 포함한다.
 - `.env.example` 파일에 키 목록과 예시 값(실제 비밀값 제외)을 커밋하여 신규 개발자가 설정을 파악할 수 있게 한다.
-- 환경 변수는 서버 시작 시 `src/config/env.ts`에서 일괄 로드하고 유효성을 검증한다. 필수 환경 변수 누락 시 서버 시작을 중단한다.
+- 환경 변수는 서버 시작 시 `src/config/env.js`에서 일괄 로드하고 유효성을 검증한다. 필수 환경 변수 누락 시 서버 시작을 중단한다.
 
 ### 5.2 JWT 처리 원칙
 
@@ -347,7 +340,7 @@ PRD 4.3과 도메인 정의서 UC-02를 기반으로 한다.
 - 토큰 만료 처리: 1차 MVP에서는 만료 시 재로그인 유도. Refresh Token은 2차에서 도입을 검토한다.
 
 **백엔드 미들웨어 원칙**:
-- JWT 검증 미들웨어는 `auth.middleware.ts` 단일 파일로 구현한다.
+- JWT 검증 미들웨어는 `auth.middleware.js` 단일 파일로 구현한다.
 - 검증 성공 시 `req.user`에 `{ userId: string }` 객체를 첨부한다.
 - 토큰 없음 또는 유효하지 않은 토큰에 대해 401 응답을 반환한다.
 - PRD 4.3의 전략 패턴 확장을 위해 토큰 검증 로직을 `verifyToken` 함수로 분리한다.
@@ -370,7 +363,7 @@ PRD 4.3과 도메인 정의서 UC-02를 기반으로 한다.
 - `pg` 라이브러리 사용 시 반드시 파라미터화된 쿼리(Parameterized Query)를 사용한다.
 - 사용자 입력값을 쿼리 문자열에 직접 연결(string concatenation)하는 코드는 절대 작성하지 않는다.
 
-```typescript
+```javascript
 // 금지 (SQL Injection 취약)
 await pool.query(`SELECT * FROM todos WHERE user_id = '${userId}'`);
 
@@ -591,68 +584,61 @@ export const QUERY_KEYS = {
 ```
 backend/
 ├── src/
-│   ├── index.ts                          # 서버 진입점 (Express 앱 초기화, 포트 바인딩)
-│   ├── app.ts                            # Express 앱 설정 (미들웨어 등록, 라우터 연결)
+│   ├── index.js                          # 서버 진입점 (Express 앱 초기화, 포트 바인딩)
+│   ├── app.js                            # Express 앱 설정 (미들웨어 등록, 라우터 연결)
 │   │
 │   ├── config/
-│   │   ├── env.ts                        # 환경 변수 로드 및 필수값 유효성 검증
-│   │   └── db.ts                         # pg.Pool 단일 인스턴스 생성 및 export
+│   │   ├── env.js                        # 환경 변수 로드 및 필수값 유효성 검증
+│   │   └── db.js                         # pg.Pool 단일 인스턴스 생성 및 export
 │   │
 │   ├── routes/                           # 라우팅 레이어 (URL 매핑)
-│   │   ├── index.ts                      # 모든 라우터를 /api prefix로 통합
-│   │   ├── auth.routes.ts                # POST /auth/register, POST /auth/login
-│   │   ├── user.routes.ts                # GET /users/me, PATCH /users/me
-│   │   ├── todo.routes.ts                # GET/POST /todos, PATCH/DELETE /todos/:id
-│   │   └── category.routes.ts            # GET /categories, POST /categories
+│   │   ├── index.js                      # 모든 라우터를 /api prefix로 통합
+│   │   ├── auth.routes.js                # POST /auth/register, POST /auth/login
+│   │   ├── user.routes.js                # GET /users/me, PATCH /users/me
+│   │   ├── todo.routes.js                # GET/POST /todos, PATCH/DELETE /todos/:id
+│   │   └── category.routes.js            # GET /categories, POST /categories
 │   │
 │   ├── controllers/                      # 컨트롤러 레이어 (요청 파싱, 응답 직렬화)
-│   │   ├── auth.controller.ts            # register, login
-│   │   ├── user.controller.ts            # getMe, updateMe
-│   │   ├── todo.controller.ts            # getTodos, createTodo, updateTodo, deleteTodo, toggleComplete
-│   │   └── category.controller.ts        # getCategories, createCategory
+│   │   ├── auth.controller.js            # register, login
+│   │   ├── user.controller.js            # getMe, updateMe
+│   │   ├── todo.controller.js            # getTodos, createTodo, updateTodo, deleteTodo, toggleComplete
+│   │   └── category.controller.js        # getCategories, createCategory
 │   │
 │   ├── services/                         # 서비스 레이어 (비즈니스 로직, BR 검증)
-│   │   ├── auth.service.ts               # registerUser, authenticateUser
-│   │   ├── user.service.ts               # getUserProfile, updateUserProfile
-│   │   ├── todo.service.ts               # findTodos, createTodo, updateTodo, deleteTodo, toggleComplete
-│   │   └── category.service.ts           # findCategories, createCategory
+│   │   ├── auth.service.js               # registerUser, authenticateUser
+│   │   ├── user.service.js               # getUserProfile, updateUserProfile
+│   │   ├── todo.service.js               # findTodos, createTodo, updateTodo, deleteTodo, toggleComplete
+│   │   └── category.service.js           # findCategories, createCategory
 │   │
 │   ├── repositories/                     # 레포지토리 레이어 (SQL 쿼리, DB 접근)
-│   │   ├── user.repository.ts            # findByEmail, insertUser, updateUser
-│   │   ├── todo.repository.ts            # findByUserId, findById, insertTodo, updateTodo, deleteById
-│   │   └── category.repository.ts        # findByUserIdAndDefault, insertCategory, findById
+│   │   ├── user.repository.js            # findByEmail, insertUser, updateUser
+│   │   ├── todo.repository.js            # findByUserId, findById, insertTodo, updateTodo, deleteById
+│   │   └── category.repository.js        # findByUserIdAndDefault, insertCategory, findById
 │   │
 │   ├── middlewares/
-│   │   ├── auth.middleware.ts            # JWT 검증, req.user 설정
-│   │   ├── error.middleware.ts           # 전역 에러 핸들러
-│   │   └── validate.middleware.ts        # 요청 바디/쿼리 파라미터 유효성 검증
+│   │   ├── auth.middleware.js            # JWT 검증, req.user 설정
+│   │   ├── error.middleware.js           # 전역 에러 핸들러
+│   │   └── validate.middleware.js        # 요청 바디/쿼리 파라미터 유효성 검증
 │   │
-│   ├── utils/
-│   │   ├── jwt.utils.ts                  # signToken, verifyToken
-│   │   ├── password.utils.ts             # hashPassword, comparePassword (bcrypt)
-│   │   ├── date.utils.ts                 # isOverdue 계산
-│   │   └── logger.ts                     # 로거 유틸리티
-│   │
-│   └── types/
-│       ├── express.d.ts                  # Express Request 타입 확장 (req.user)
-│       ├── todo.types.ts                 # Todo 엔티티, DTO 타입
-│       ├── category.types.ts             # Category 엔티티, DTO 타입
-│       └── user.types.ts                 # User 엔티티, DTO 타입
+│   └── utils/
+│       ├── jwt.utils.js                  # signToken, verifyToken
+│       ├── password.utils.js             # hashPassword, comparePassword (bcrypt)
+│       ├── date.utils.js                 # isOverdue 계산
+│       └── logger.js                     # 로거 유틸리티
 │
 ├── tests/
 │   ├── unit/
 │   │   ├── services/                     # 서비스 레이어 단위 테스트 (BR 검증 중심)
 │   │   └── utils/                        # 유틸리티 함수 단위 테스트
 │   └── integration/
-│       ├── auth.test.ts                  # 인증 API 통합 테스트
-│       ├── todo.test.ts                  # 할일 API 통합 테스트
-│       └── category.test.ts             # 카테고리 API 통합 테스트
+│       ├── auth.test.js                  # 인증 API 통합 테스트
+│       ├── todo.test.js                  # 할일 API 통합 테스트
+│       └── category.test.js             # 카테고리 API 통합 테스트
 │
 ├── .env
 ├── .env.example
 ├── .eslintrc.cjs
 ├── .prettierrc
-├── tsconfig.json
 └── package.json
 ```
 
@@ -662,8 +648,8 @@ backend/
 
 URL 경로와 HTTP 메서드를 컨트롤러 함수에 매핑하고, 미들웨어 체인을 선언한다. 비즈니스 로직을 포함하지 않는다.
 
-```typescript
-// todo.routes.ts 예시
+```javascript
+// todo.routes.js 예시
 router.get('/',           authMiddleware, getTodos);
 router.post('/',          authMiddleware, validateCreateTodo, createTodo);
 router.patch('/:id',      authMiddleware, validateUpdateTodo, updateTodo);
@@ -687,9 +673,9 @@ SQL 쿼리 실행과 DB Row를 내부 타입으로 변환하는 것만 담당한
 
 #### Connection Pool 관리
 
-```typescript
-// config/db.ts
-import { Pool } from 'pg';
+```javascript
+// config/db.js
+const { Pool } = require('pg');
 
 const pool = new Pool({
   host: process.env.DB_HOST,
@@ -701,7 +687,7 @@ const pool = new Pool({
   idleTimeoutMillis: Number(process.env.DB_POOL_IDLE_TIMEOUT) || 30000,
 });
 
-export default pool;
+module.exports = pool;
 ```
 
 - `Pool` 인스턴스는 `config/db.ts`에서 단일 생성 후 export한다. 레포지토리 파일에서 직접 `new Pool()`을 생성하지 않는다.
@@ -709,10 +695,10 @@ export default pool;
 
 #### 동적 필터 쿼리 작성 패턴 (BR-F-01~F-04)
 
-```typescript
-// todo.repository.ts - 동적 필터 쿼리 구성
-const conditions: string[] = ['t.user_id = $1'];
-const values: unknown[] = [userId];
+```javascript
+// todo.repository.js - 동적 필터 쿼리 구성
+const conditions = ['t.user_id = $1'];
+const values = [userId];
 let idx = 2;
 
 if (categoryId) {
@@ -751,15 +737,13 @@ return pool.query(sql, values);
 
 #### 커스텀 에러 클래스
 
-```typescript
+```javascript
 // 서비스 계층에서 비즈니스 에러를 throw할 때 사용
 class AppError extends Error {
-  constructor(
-    public statusCode: number,
-    public message: string,
-    public code?: string  // 예: 'EMAIL_DUPLICATE', 'FORBIDDEN'
-  ) {
+  constructor(statusCode, message, code) {
     super(message);
+    this.statusCode = statusCode;
+    this.code = code;  // 예: 'EMAIL_DUPLICATE', 'FORBIDDEN'
   }
 }
 ```
