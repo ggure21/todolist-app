@@ -24,3 +24,15 @@ app.listen(3000);
 http://localhost:3000/docs/
 
 강의내용업데이트
+
+supabase myproject DB pw : O9fhZIu0fnI9AJ7C
+DB_CONNECTION_STRING : postgresql://postgres.kwjtbuujhphetpiopfxe:O9fhZIu0fnI9AJ7C@aws-1-ap-northeast-2.pooler.supabase.com:6543/postgres
+
+서버실행 (개발서버, backend, front 모두)
+npm run dev 
+
+backend 안에 .env 파일은 절대 수정하지 말것. env example 안에있는 파일을 수정할 것
+env 파일은 자동으로 변경됨? 확인 필요
+
+jhkwon-todolist-fe.vercel.app
+jhkwon-todolist-be.vercel.app
