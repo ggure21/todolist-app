@@ -1,5 +1,7 @@
 const { Pool } = require('pg');
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const pool = new Pool({
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
@@ -9,6 +11,8 @@ const pool = new Pool({
   max: Number(process.env.DB_POOL_MAX) || 10,
   idleTimeoutMillis: Number(process.env.DB_POOL_IDLE_TIMEOUT) || 30000,
   connectionTimeoutMillis: 2000,
+  // Supabase 등 원격 DB는 SSL 필수
+  ssl: isProduction ? { rejectUnauthorized: false } : false,
 });
 
 pool.on('error', (err) => {
