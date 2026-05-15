@@ -17,7 +17,7 @@ function LoginPage() {
 
       <div className="w-full max-w-sm">
         <h1 className="text-2xl font-bold text-[var(--color-primary-600)] text-center mb-8 tracking-tight">
-          TodoListApp
+          할일 목록 앱
         </h1>
         <div className="bg-[var(--color-bg-base)] border border-[var(--color-border)] rounded-xl p-8 shadow-[var(--shadow-sm)]">
           <LoginForm />
