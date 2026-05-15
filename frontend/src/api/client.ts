@@ -3,13 +3,13 @@ import { useAuthStore } from '../stores/authStore';
 const BASE_URL = import.meta.env['VITE_API_BASE_URL'] ?? 'http://localhost:3000';
 
 export class ApiError extends Error {
-  constructor(
-    public readonly statusCode: number,
-    message: string,
-    public readonly code: string,
-  ) {
+  readonly statusCode: number;
+  readonly code: string;
+  constructor(statusCode: number, message: string, code: string) {
     super(message);
     this.name = 'ApiError';
+    this.statusCode = statusCode;
+    this.code = code;
   }
 }
 

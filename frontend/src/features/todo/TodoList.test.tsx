@@ -60,7 +60,7 @@ describe('TodoList', () => {
   });
 
   it('빈 목록이면 EmptyState를 렌더링한다', () => {
-    vi.mocked(useTodos).mockReturnValue({ isLoading: false, isError: false, data: [] } as ReturnType<typeof useTodos>);
+    vi.mocked(useTodos).mockReturnValue({ isLoading: false, isError: false, data: [] as Todo[] } as ReturnType<typeof useTodos>);
     renderWithProviders(<TodoList onEdit={mockOnEdit} />);
     expect(screen.getByRole('status', { name: /할일이 없습니다/ })).toBeInTheDocument();
   });

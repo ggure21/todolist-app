@@ -11,7 +11,7 @@ vi.mock('../../api/user.api', () => ({
 }));
 
 import { userApi } from '../../api/user.api';
-const mockUserApi = userApi as { updateProfile: ReturnType<typeof vi.fn> };
+const mockUserApi = userApi as unknown as { updateProfile: ReturnType<typeof vi.fn> };
 
 beforeEach(() => vi.clearAllMocks());
 

@@ -6,7 +6,7 @@ import { formatDate, isOverdue } from '../../utils/date.utils';
 
 interface TodoCardProps {
   todo: Todo;
-  categoryName?: string;
+  categoryName?: string | undefined;
   onEdit?: (todo: Todo) => void;
 }
 

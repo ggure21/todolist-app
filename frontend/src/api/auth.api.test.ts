@@ -5,7 +5,13 @@ import { authApi } from './auth.api';
 vi.mock('./client', () => ({
   api: { get: vi.fn(), post: vi.fn(), patch: vi.fn(), delete: vi.fn() },
   ApiError: class ApiError extends Error {
-    constructor(public statusCode: number, message: string, public code: string) { super(message); }
+    statusCode: number;
+    code: string;
+    constructor(statusCode: number, message: string, code: string) {
+      super(message);
+      this.statusCode = statusCode;
+      this.code = code;
+    }
   },
 }));
 

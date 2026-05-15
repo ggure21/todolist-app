@@ -10,7 +10,7 @@ vi.mock('../../api/todo.api', () => ({
 }));
 
 import { todoApi } from '../../api/todo.api';
-const mockTodoApi = todoApi as { toggleTodoComplete: ReturnType<typeof vi.fn> };
+const mockTodoApi = todoApi as unknown as { toggleTodoComplete: ReturnType<typeof vi.fn> };
 
 beforeEach(() => vi.clearAllMocks());
 

@@ -11,7 +11,7 @@ vi.mock('../../api/category.api', () => ({
 }));
 
 import { categoryApi } from '../../api/category.api';
-const mockCategoryApi = categoryApi as { createCategory: ReturnType<typeof vi.fn> };
+const mockCategoryApi = categoryApi as unknown as { createCategory: ReturnType<typeof vi.fn> };
 
 beforeEach(() => vi.clearAllMocks());
 

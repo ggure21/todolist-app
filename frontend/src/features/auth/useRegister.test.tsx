@@ -16,7 +16,7 @@ vi.mock('react-router-dom', async (importOriginal) => {
 });
 
 import { authApi } from '../../api/auth.api';
-const mockAuthApi = authApi as { register: ReturnType<typeof vi.fn> };
+const mockAuthApi = authApi as unknown as { register: ReturnType<typeof vi.fn> };
 
 beforeEach(() => vi.clearAllMocks());
 

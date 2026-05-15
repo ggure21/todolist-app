@@ -17,7 +17,7 @@ vi.mock('react-router-dom', async (importOriginal) => {
 });
 
 import { authApi } from '../../api/auth.api';
-const mockAuthApi = authApi as { login: ReturnType<typeof vi.fn> };
+const mockAuthApi = authApi as unknown as { login: ReturnType<typeof vi.fn> };
 
 function makeJwt(userId: string) {
   const payload = btoa(JSON.stringify({ userId }));

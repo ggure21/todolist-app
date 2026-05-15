@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderWithProviders } from '../test/renderWithProviders';
@@ -28,7 +28,7 @@ vi.mock('react-router-dom', async (importOriginal) => {
 });
 
 import { userApi } from '../api/user.api';
-const mockUserApi = userApi as { getMe: ReturnType<typeof vi.fn> };
+const mockUserApi = userApi as unknown as { getMe: ReturnType<typeof vi.fn> };
 
 beforeEach(() => vi.clearAllMocks());
 

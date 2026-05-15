@@ -20,8 +20,8 @@ export interface Todo {
 export interface CreateTodoRequest {
   title: string;
   category_id: string;
-  description?: string;
-  due_date?: string;
+  description?: string | undefined;
+  due_date?: string | undefined;
 }
 
 export interface UpdateTodoRequest {

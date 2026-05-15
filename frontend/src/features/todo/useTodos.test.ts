@@ -16,7 +16,7 @@ vi.mock('../../stores/filterStore', () => ({
 }));
 
 import { todoApi } from '../../api/todo.api';
-const mockTodoApi = todoApi as { getTodos: ReturnType<typeof vi.fn> };
+const mockTodoApi = todoApi as unknown as { getTodos: ReturnType<typeof vi.fn> };
 
 beforeEach(() => vi.clearAllMocks());
 

@@ -9,7 +9,6 @@ vi.mock('../../api/category.api', () => ({
   },
 }));
 
-const mockSetAuth = vi.fn();
 let mockAccessToken: string | null = 'mock-token';
 
 vi.mock('../../stores/authStore', () => ({
@@ -19,7 +18,7 @@ vi.mock('../../stores/authStore', () => ({
 }));
 
 import { categoryApi } from '../../api/category.api';
-const mockCategoryApi = categoryApi as { getCategories: ReturnType<typeof vi.fn> };
+const mockCategoryApi = categoryApi as unknown as { getCategories: ReturnType<typeof vi.fn> };
 
 beforeEach(() => {
   vi.clearAllMocks();
