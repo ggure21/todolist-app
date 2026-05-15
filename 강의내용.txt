@@ -38,3 +38,5 @@ jhkwon-todolist-fe.vercel.app
 jhkwon-todolist-be.vercel.app
 
 FA01IS
+
+same origin policy 알아보기
